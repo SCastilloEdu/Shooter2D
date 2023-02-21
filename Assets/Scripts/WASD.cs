@@ -1,13 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
-public class WASD : MonoBehaviour
+public class WASD : MonoBehaviour // Controls movement, health, and collision with enemies
 {
 	public float speed = 0.025f;
+	public int health = 3;
+	public float invulnerability = 2;
+	float invulnTime = 0;
 	
 	float xBorder;
 	float yBorder;
+	
+	public Text healthText;
 	
 	Vector3 startPosition;
 	// Movement keys
@@ -20,7 +27,6 @@ public class WASD : MonoBehaviour
 	public KeyCode leftKeyAlt = KeyCode.LeftArrow;
 	public KeyCode rightKeyAlt = KeyCode.RightArrow;
 	
-    // Start is called before the first frame update
     void Start()
     {
         xBorder = (Screen.width-transform.localScale.x/2)/200;
@@ -28,30 +34,63 @@ public class WASD : MonoBehaviour
 		print("x = " + xBorder);
 		print("y = " + yBorder);
 		startPosition = transform.position;
+		healthText.text = "Health: " + health;
     }
 
-    // Update is called once per frame
     void Update()
     {
 		{// Movement
 			{// Input
 				Vector3 newPosition = transform.position;
-				if (Input.GetKey(upKey) || Input.GetKey(upKeyAlt))
+				if (Input.GetKey(upKey) || Input.GetKey(upKeyAlt)) // Up
 				{
-					newPosition.y+=speed;
-					transform.position = newPosition;
+					if (Input.GetKey(leftKey) || Input.GetKey(leftKeyAlt)) // Up Left
+					{
+						newPosition.x-=speed/1.5f;
+						newPosition.y+=speed/1.5f;
+						transform.position = newPosition;
+					}
+					else if (Input.GetKey(rightKey) || Input.GetKey(rightKeyAlt)) // Up Right
+					{
+						newPosition.x+=speed/1.5f;
+						newPosition.y+=speed/1.5f;
+						transform.position = newPosition;
+					}
+					else
+					{
+						newPosition.y+=speed;
+						transform.position = newPosition;
+					}
 				}
-				if (Input.GetKey(downKey) || Input.GetKey(downKeyAlt))
+				
+				if (Input.GetKey(downKey) || Input.GetKey(downKeyAlt)) // Down
 				{
-					newPosition.y-=speed;
-					transform.position = newPosition;
+					if (Input.GetKey(leftKey) || Input.GetKey(leftKeyAlt)) // Down Left
+					{
+						newPosition.x-=speed/1.5f;
+						newPosition.y-=speed/1.5f;
+						transform.position = newPosition;
+					}
+					else if (Input.GetKey(rightKey) || Input.GetKey(rightKeyAlt)) // Down Right
+					{
+						newPosition.x+=speed/1.5f;
+						newPosition.y-=speed/1.5f;
+						transform.position = newPosition;
+					}
+					else
+					{
+						newPosition.y-=speed;
+						transform.position = newPosition;
+					}
 				}
-				if (Input.GetKey(leftKey) || Input.GetKey(leftKeyAlt))
+				
+				if ((Input.GetKey(leftKey) || Input.GetKey(leftKeyAlt)) && !(Input.GetKey(upKey) || Input.GetKey(upKeyAlt) || Input.GetKey(downKey) || Input.GetKey(downKeyAlt))) // Left
 				{
 					newPosition.x-=speed;
 					transform.position = newPosition;
 				}
-				if (Input.GetKey(rightKey) || Input.GetKey(rightKeyAlt))
+				
+				if ((Input.GetKey(rightKey) || Input.GetKey(rightKeyAlt)) && !(Input.GetKey(upKey) || Input.GetKey(upKeyAlt) || Input.GetKey(downKey) || Input.GetKey(downKeyAlt))) // Right
 				{
 					newPosition.x+=speed;
 					transform.position = newPosition;
@@ -83,12 +122,29 @@ public class WASD : MonoBehaviour
 			}
 		}
 		
+		if (invulnTime > 0) // While invulnerable
+		{
+			invulnTime-=Time.deltaTime;
+			gameObject.GetComponent<SpriteRenderer>().color = new Color(.5f,.5f,1f,.5f);
+			if (invulnTime <= 0) // End invulnerability
+			{
+				gameObject.GetComponent<SpriteRenderer>().color = new Color(1f,1f,1f,1f);
+			}
+		}
     }
+	
 	void OnCollisionEnter2D(Collision2D collision)
 	{
-		if(collision.collider.CompareTag ("Object"))
+		if((collision.collider.CompareTag ("Enemy")) && (invulnTime <=0) ) // On touch enemy
 				{
-					transform.position = startPosition;
+					invulnTime = invulnerability; // Invulnerable
+					health-=1; // Hurt
+					if (health <= 0) // Die if no health
+					{
+						SceneManager.LoadScene("EndScene");
+					}
+					transform.position = startPosition; // Return to origin
+					healthText.text = "Health: " + health; // Show new health
 				}
 	}
 }
