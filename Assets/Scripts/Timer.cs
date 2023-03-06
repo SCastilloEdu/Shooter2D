@@ -12,9 +12,17 @@ public class Timer : MonoBehaviour // Timer
 	
 	bool mercy = true;
 	public float mercyPeriod = 2;
+	public float spawnTimer = 0.5f;
+	float spawnCooldown;
+	public GameObject chaserPrefab;
+	
+	float xBorder;
+	float yBorder;
 
 	void Start()
 	{
+        xBorder = (Screen.width-transform.localScale.x/2)/200;
+		yBorder = (Screen.height-transform.localScale.y/2)/200;
 		timerText.text = "Time: " + (int)currentTime;
 	}
 
@@ -39,6 +47,13 @@ public class Timer : MonoBehaviour // Timer
 		if (currentTime <= 0)
 		{
 			SceneManager.LoadScene(sceneName);
+		}
+		
+		spawnCooldown-=Time.deltaTime; // Spawn enemies
+		if (spawnCooldown <= 0)
+		{
+			spawnCooldown = spawnTimer;
+			
 		}
     }
 }

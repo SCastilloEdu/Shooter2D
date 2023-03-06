@@ -6,15 +6,22 @@ using UnityEngine.SceneManagement;
 
 public class WASD : MonoBehaviour // Controls movement, health, and collision with enemies
 {
+	// Variables
 	public float speed = 0.025f;
 	public int health = 3;
 	public float invulnerability = 2;
+	public float fireRate = 0.3f;
 	float invulnTime = 0;
+	float shootCooldown = 0.05f;
 	
+	// Border
 	float xBorder;
 	float yBorder;
 	
+	// Objects
 	public Text healthText;
+	public GameObject bulletPrefab;
+	public Camera cam;
 	
 	Vector3 startPosition;
 	// Movement keys
@@ -26,6 +33,9 @@ public class WASD : MonoBehaviour // Controls movement, health, and collision wi
 	public KeyCode downKeyAlt = KeyCode.DownArrow;
 	public KeyCode leftKeyAlt = KeyCode.LeftArrow;
 	public KeyCode rightKeyAlt = KeyCode.RightArrow;
+	
+	// Mouse position
+	Vector2 mousePos;
 	
     void Start()
     {
@@ -120,6 +130,16 @@ public class WASD : MonoBehaviour // Controls movement, health, and collision wi
 					transform.position = newPosition;
 				}
 			}
+			{// Mouse
+				var dir = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position); // Get mouse position
+				var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg; // Convert to angle
+				gameObject.transform.rotation = Quaternion.AngleAxis(angle-90, Vector3.forward); // Rotate player
+				if(Input.GetButton("Fire1") && shootCooldown <= 0) // Shooting cooldown + Firing on click
+				{
+					GameObject bullet = Instantiate(bulletPrefab, gameObject.transform.position, gameObject.transform.rotation);
+					shootCooldown = fireRate;
+				}
+			}
 		}
 		
 		if (invulnTime > 0) // While invulnerable
@@ -130,6 +150,11 @@ public class WASD : MonoBehaviour // Controls movement, health, and collision wi
 			{
 				gameObject.GetComponent<SpriteRenderer>().color = new Color(1f,1f,1f,1f);
 			}
+		}
+		
+		if (shootCooldown > 0) // Shooting cooldown
+		{
+			shootCooldown-=Time.deltaTime;
 		}
     }
 	

@@ -10,8 +10,6 @@ public class Chaser : MonoBehaviour // Enemy behaviors
 	float xBorder;
 	float yBorder;
 	
-	Vector3 startPosition;
-	
     // Start is called before the first frame update
     void Start()
     {
@@ -54,9 +52,9 @@ public class Chaser : MonoBehaviour // Enemy behaviors
     }
 	void OnCollisionEnter2D(Collision2D collision)
 	{
-		if(collision.collider.CompareTag ("Object"))
-				{
-					transform.position = startPosition;
-				}
+		if(collision.collider.CompareTag ("Bullet"))
+		{
+			Destroy(gameObject); // Destroy chaser
+		}
 	}
 }

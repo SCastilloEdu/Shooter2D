@@ -320,7 +320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -432,10 +432,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 4aefa8d2f57960c428e1040975b905b2, type: 3}
-    m_FontSize: 300
+    m_FontSize: 100
     m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 5
+    m_MinSize: 0
     m_MaxSize: 300
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -462,6 +462,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1385746704}
   - component: {fileID: 1385746705}
+  - component: {fileID: 1385746706}
   m_Layer: 0
   m_Name: Menu_BG
   m_TagString: Untagged
@@ -469,20 +470,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1385746704
-Transform:
+--- !u!224 &1385746704
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1385746703}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -960, y: -541.85187, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: -0.92592996}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.66965246, y: 0.66965246, z: 0.66965246}
   m_Children: []
   m_Father: {fileID: 803691485}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 9000, y: 0.1000061}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &1385746705
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -534,3 +540,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1818360610 &1385746706
+ScaleConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1385746703}
+  m_Enabled: 1
+  m_Weight: 1
+  m_ScaleAtRest: {x: 0.72661215, y: 0.72661215, z: 0.72661215}
+  m_ScaleOffset: {x: 1.5995202, y: 1.5995202, z: 1.5995202}
+  m_AffectScalingX: 1
+  m_AffectScalingY: 1
+  m_AffectScalingZ: 1
+  m_IsContraintActive: 1
+  m_IsLocked: 1
+  m_Sources:
+  - sourceTransform: {fileID: 488691642}
+    weight: 1
